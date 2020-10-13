@@ -44,11 +44,17 @@ def makeplot(all_data,i):
     idx0 = [i for i, x in enumerate(x1[:-1]-x1[1:]>0) if x]
     if len(idx0)>0 and x1[idx0[-1]+1]==0:
         x1,y1 = x1[:idx0[-1]+1],y1[:idx0[-1]+1]
-    plt.plot(x0,y0)
-    plt.plot(x1,y1)
-    plt.ylabel('Taux detection (recall) fraude (NB) pct')
-    plt.xlabel('Pertinence')
-    plt.legend(['CAPS','CAPS + MAURO'])
+    if all_data['args'].revert_axes:
+        plt.plot(x0,y0)
+        plt.plot(x1,y1)
+        plt.ylabel('Taux detection (recall) fraude (NB) pct')
+        plt.xlabel('Pertinence')
+    else:
+        plt.plot(y0,x0)
+        plt.plot(y1,x1)
+        plt.xlabel('Taux detection (recall) fraude (NB) pct')
+        plt.ylabel('Pertinence')
+    plt.legend(['Indicateurs CAPS','Indicateurs CAPS + LIX'])
 
     plt.subplot(2, 2, 2)
     x0 = db.loc[:,'CAPS - Pertinence (MT) pct'].to_numpy()
@@ -63,11 +69,17 @@ def makeplot(all_data,i):
     idx0 = [i for i, x in enumerate(x1[:-1]-x1[1:]>0) if x]
     if len(idx0)>0 and x1[idx0[-1]+1]==0:
         x1,y1 = x1[:idx0[-1]+1],y1[:idx0[-1]+1]
-    plt.plot(x0,y0)
-    plt.plot(x1,y1)
-    plt.ylabel('Taux detection (recall) fraude (MT) pct')
-    plt.xlabel('Pertinence')
-    plt.legend(['CAPS','CAPS + MAURO'])
+    if all_data['args'].revert_axes:
+        plt.plot(x0,y0)
+        plt.plot(x1,y1)
+        plt.ylabel('Taux detection (recall) fraude (MT) pct')
+        plt.xlabel('Pertinence')
+    else:
+        plt.plot(y0,x0)
+        plt.plot(y1,x1)
+        plt.xlabel('Taux detection (recall) fraude (MT) pct')
+        plt.ylabel('Pertinence')
+    plt.legend(['Indicateurs CAPS','Indicateurs CAPS + LIX'])
     
     plt.subplot(2, 2, 3)
     x0 = db.loc[:,'CAPS - Pertinence (NB) pct'].to_numpy()
@@ -82,11 +94,17 @@ def makeplot(all_data,i):
     idx0 = [i for i, x in enumerate(x1[:-1]-x1[1:]>0) if x]
     if len(idx0)>0 and x1[idx0[-1]+1]==0:
         x1,y1 = x1[:idx0[-1]+1],y1[:idx0[-1]+1]
-    plt.plot(x0[~pd.isnull(x0)],y0[~pd.isnull(x0)])
-    plt.plot(x1[~pd.isnull(x1)],y1[~pd.isnull(x1)])
-    plt.ylabel('Taux detection (recall) TF (NB) pct')
-    plt.xlabel('Pertinence')
-    plt.legend(['CAPS','CAPS + MAURO'])
+    if all_data['args'].revert_axes:
+        plt.plot(x0,y0)
+        plt.plot(x1,y1)
+        plt.ylabel('Taux detection (recall) TF (NB) pct')
+        plt.xlabel('Pertinence')
+    else:
+        plt.plot(y0,x0)
+        plt.plot(y1,x1)
+        plt.xlabel('Taux detection (recall) TF (NB) pct')
+        plt.ylabel('Pertinence')
+    plt.legend(['Indicateurs CAPS','Indicateurs CAPS + LIX'])
 
     plt.subplot(2, 2, 4)
     x0 = db.loc[:,'CAPS - Pertinence (MT) pct'].to_numpy()
@@ -101,11 +119,17 @@ def makeplot(all_data,i):
     idx0 = [i for i, x in enumerate(x1[:-1]-x1[1:]>0) if x]
     if len(idx0)>0 and x1[idx0[-1]+1]==0:
         x1,y1 = x1[:idx0[-1]+1],y1[:idx0[-1]+1]
-    plt.plot(x0[~pd.isnull(x0)],y0[~pd.isnull(x0)])
-    plt.plot(x1[~pd.isnull(x1)],y1[~pd.isnull(x1)])
-    plt.ylabel('Taux detection (recall) TF (MT) pct')
-    plt.xlabel('Pertinence')
-    plt.legend(['CAPS','CAPS + MAURO'])
+    if all_data['args'].revert_axes:
+        plt.plot(x0,y0)
+        plt.plot(x1,y1)
+        plt.ylabel('Taux detection (recall) TF (MT) pct')
+        plt.xlabel('Pertinence')
+    else:
+        plt.plot(y0,x0)
+        plt.plot(y1,x1)
+        plt.xlabel('Taux detection (recall) TF (MT) pct')
+        plt.ylabel('Pertinence')
+    plt.legend(['Indicateurs CAPS','Indicateurs CAPS + LIX'])
 
     print('saving '+all_data['rootfilename'][i]+'.png')
     fig.savefig(all_data['rootfilename'][i]+'.png')
@@ -120,6 +144,7 @@ if __name__ == '__main__':
     menu = parser.add_argument_group('Menu Options')
     menu.add_argument('-d','--data',dest='csvfilename',nargs='+',required=True,\
                      help='reads the database in CSVFILENAME files (it can be a list of files)')
+    menu.add_argument('--revert-axes',dest='revert_axes',action='store_true')
     args = parser.parse_args()
     all_data['args'] = args
 
